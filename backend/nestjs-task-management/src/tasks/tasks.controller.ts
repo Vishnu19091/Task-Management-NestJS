@@ -9,19 +9,9 @@ import { Task } from './task.entity';
 export class TasksController {
   constructor(private tasksService: TasksService) {}
 
-  // @Get()
-  // getTasks(@Query() filterDto: GetTaskFilterDto): Task[] {
-  //   if (Object.keys(filterDto).length) {
-  //     return this.tasksService.getTaskWithFilters(filterDto);
-  //   }
-  //   else {
-  //     return this.tasksService.getAllTasks();
-  //   }
-  // }
-
   @Get()
-  getTasks(): Promise<Task[]>{
-    return this.tasksService.getAllTasks()
+  getTasks(@Query() filterDto: GetTaskFilterDto): Promise<Task[]> {
+    return this.tasksService.getTasks(filterDto);
   }
 
   @Get('/:id')
@@ -29,21 +19,17 @@ export class TasksController {
     return this.tasksService.getTaskByID(id);
   }
   
-  // @Delete('/:id')
-  // deleteTaskByID(@Param('id') id: string) {
-  //   return this.tasksService.deleteTasByID(id)
-  // }
-
   @Delete('/:id')
-  deleteTaskByID(@Param('id') id: string): void {
+  deleteTaskByID(@Param('id') id: string): Promise<void> {
     return this.tasksService.deleteTaskByID(id)
   }
 
-  // // In this approach we can give whatever parameters to the body. in simple this is bad approach as this could pass unknown parameters
-  // //   @Post()
-  // //   createTask(@Body() body) {
-  // //     console.log('body', body);
-  // //   }
+  // In this approach we can give whatever parameters to the body.
+  // In simple this is bad approach as this could pass unknown parameters
+  //   @Post()
+  //   createTask(@Body() body) {
+  //     console.log('body', body);
+  //   }
 
   @Post()
   creatTask(
@@ -52,12 +38,12 @@ export class TasksController {
     return this.tasksService.createTask(createTaskDto);
   }
 
-  // @Patch('/:id/status')
-  // updateTaskStatus(
-  //   @Param('id') id: string,
-  //   @Body() updateTaskStatusDto: updateTaskStatusDto,
-  // ) {
-  //   const { status } = updateTaskStatusDto;
-  //   return this.tasksService.updateTaskStatus(id, status);
-  // }
+  @Patch('/:id/status')
+  updateTaskStatus(
+    @Param('id') id: string,
+    @Body() updateTaskStatusDto: updateTaskStatusDto,
+  ): Promise<Task> {
+    const { status } = updateTaskStatusDto;
+    return this.tasksService.updateTaskStatus(id, status);
+  }
 }
