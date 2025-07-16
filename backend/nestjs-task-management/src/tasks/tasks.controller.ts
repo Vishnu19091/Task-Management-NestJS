@@ -28,11 +28,6 @@ export class TasksController {
   getTaskByID(@Param('id') id: string): Promise<Task>{
     return this.tasksService.getTaskByID(id);
   }
-
-  // @Get('/:id')
-  // getTaskByID(@Param('id') id:string){
-  //   return this.tasksService.getTaskByID(id);
-  // }
   
   // @Delete('/:id')
   // deleteTaskByID(@Param('id') id: string) {
