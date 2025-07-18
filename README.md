@@ -1,10 +1,8 @@
 ## Task Management Web Application
 
-This is a task management web application where authenticated users can create and manage their tasks.
+Welcome to Task management app where authenticated users can create and manage their tasks.
 
 ## Tech Stack used
-
----
 
 ### Frontend
 
@@ -24,5 +22,7 @@ This is a task management web application where authenticated users can create a
 
 ## Deployment
 
-1. Backend API will be hosted using Tailscale.
+Deployed Link - [https://task-management-nest-js.vercel.app](https://task-management-nest-js.vercel.app) **(Still in development)**
+
+1. Backend API services is hosted using Tailscale.
 2. Frontend deployed using Vercel.

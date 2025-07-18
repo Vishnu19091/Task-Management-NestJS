@@ -4,10 +4,14 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestj
 import { TasksService } from './tasks.service';
 import { GetTaskFilterDto } from './dto/get-task-filter.dto';
 import { Task } from './task.entity';
+import { ConfigService } from '@nestjs/config';
 
 @Controller('tasks')
 export class TasksController {
-  constructor(private tasksService: TasksService) {}
+  constructor(private tasksService: TasksService,
+    private configService: ConfigService) {
+    console.log(configService.get('TEST_VALUE'));
+     }
 
   @Get()
   getTasks(@Query() filterDto: GetTaskFilterDto): Promise<Task[]> {
