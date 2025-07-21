@@ -33,24 +33,30 @@ services:
       - "3000:3000"
     environment:
       - NODE_ENV=production
-      - DATABASE_URL=postgres://postgres:postgres@postgres:5432/task-management
+      - STAGE=prod
+      - DB_HOST=postgres # DB_HOST_NAME
+      - DB_PORT=5432
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=password
+      - DB_DATABASE=task-management # Don't change this DB_NAME
 
   postgres:
     image: postgres:15-alpine
     container_name: postgres-nest
     restart: always
     ports:
-      - "5432:5432" #Make sure there no other services running on this port in your machine.
+      - "5431:5432"
     environment:
-      POSTGRES_USER: user_name
-      POSTGRES_PASSWORD: user_password
-      POSTGRES_DB: task-management #This auto-creates a database in the container.
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: task-management
 
     volumes:
       - pgdata:/var/lib/postgresql/data
 
 volumes:
   pgdata:
+
 ```
 
 ## Deployment
@@ -61,4 +67,4 @@ Used [Tailscale](https://tailscale.com/kb/1223/funnel) for backend hosting and [
 
 - Author - [Vishnu VT](#)
 - Website - [Portfolio](https://vishnu-portfolio-blue.vercel.app/)
-<!-- - LinkedIn - https:// -->
+- [LinkedIn](https://www.linkedin.com/in/vishnuvt1183/)
