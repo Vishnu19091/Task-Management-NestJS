@@ -31,3 +31,21 @@ jobs:
 
       - name: Clean up
         run: docker system prune -af
+
+      - name: Send email notification
+        if: success()
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: ${{ secrets.EMAIL_SERVER }}
+          server_port: ${{ secrets.EMAIL_PORT }}
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: ✅ Docker Image Build & Front-end Deployment Successful
+          body: |
+            Your Docker image was built and pushed successfully,
+            and Front-end Deployment as well.
+            Repo: ${{ github.repository }}
+            Tag: latest
+            Time: ${{ github.event.head_commit.timestamp }}
+          to: ${{ secrets.EMAIL_TO }}
+          from: ${{ secrets.EMAIL_FROM }}
