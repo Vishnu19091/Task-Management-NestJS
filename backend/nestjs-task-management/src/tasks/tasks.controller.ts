@@ -10,7 +10,7 @@ import { ConfigService } from '@nestjs/config';
 export class TasksController {
   constructor(private tasksService: TasksService,
     private configService: ConfigService) {
-    console.log(configService.get('TEST_VALUE'));
+    // console.log(configService.get('TEST_VALUE'));
      }
 
   @Get()

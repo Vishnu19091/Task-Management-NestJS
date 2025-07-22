@@ -3,6 +3,7 @@ import { TasksModule } from './tasks/tasks.module';
 import {TypeOrmModule} from '@nestjs/typeorm'
 import { AppController } from './app.controller';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -23,12 +24,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
           password:configService.get('DB_PASSWORD'),
           database:configService.get('DB_DATABASE'),
       })
-    })
-    // TypeOrmModule.forRoot({
-    //   type: 'postgres',
-    //   autoLoadEntities: true,
-    //   synchronize: true,
-    // })
+    }),
+    AuthModule
   ],
   controllers:[AppController],
 })

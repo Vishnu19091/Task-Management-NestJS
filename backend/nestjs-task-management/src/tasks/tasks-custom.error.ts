@@ -1,3 +1,5 @@
+// Custom HttpExceptions for Tasks
+
 import { HttpException, HttpStatus } from "@nestjs/common";
 
 export class AlreadExistsError extends HttpException{

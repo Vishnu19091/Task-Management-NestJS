@@ -5,7 +5,7 @@ import { GetTaskFilterDto } from './dto/get-task-filter.dto';
 import { TasksRepository } from './tasks.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Task } from './task.entity';
-import { AlreadExistsError, TaskIdNotFound } from './custom.error';
+import { AlreadExistsError, TaskIdNotFound } from './tasks-custom.error';
 
 @Injectable()
 export class TasksService {
