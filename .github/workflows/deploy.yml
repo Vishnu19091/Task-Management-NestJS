@@ -17,8 +17,8 @@ jobs:
 
       - name: Pull latest Docker image
         working-directory: ./backend/nestjs-task-management
-        run: docker-compose pull
+        run: docker compose pull
 
       - name: Restart with latest image
         working-directory: ./backend/nestjs-task-management
-        run: docker-compose up -d --remove-orphans
+        run: docker compose up -d --remove-orphans
