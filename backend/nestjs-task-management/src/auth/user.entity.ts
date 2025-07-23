@@ -1,14 +1,14 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 // here we Define properties of table in DB
 @Entity()
-export class User{
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
+export class User {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-    @Column({unique:true})
-    username: string;
+  @Column({ unique: true })
+  username: string;
 
-    @Column()
-    password: string;
+  @Column()
+  password: string;
 }

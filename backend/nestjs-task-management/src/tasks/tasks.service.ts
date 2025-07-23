@@ -9,20 +9,19 @@ import { AlreadExistsError, TaskIdNotFound } from './tasks-custom.error';
 
 @Injectable()
 export class TasksService {
-
   constructor(
     @InjectRepository(TasksRepository)
-    private tasksRepository:TasksRepository
-  ){}
-  
+    private tasksRepository: TasksRepository,
+  ) {}
+
   // :::::::::::::::::: GET ALL TASK ::::::::::::::::::
   getTasks(filterDto: GetTaskFilterDto): Promise<Task[]> {
-    return this.tasksRepository.getTasks(filterDto); 
+    return this.tasksRepository.getTasks(filterDto);
   }
 
   // :::::::::::::::::: GET TASK BY ID ::::::::::::::::::
   async getTaskByID(id: string): Promise<Task> {
-    const found = await this.tasksRepository.findOne({where:{id}});
+    const found = await this.tasksRepository.findOne({ where: { id } });
 
     if (!found) {
       throw new TaskIdNotFound(`Task with ID: ${id} not found`);
@@ -32,7 +31,7 @@ export class TasksService {
   }
 
   // :::::::::::::::::: CREATE TASK ::::::::::::::::::
-  async createTask(CreateTaskDto:CreateTaskDto): Promise<Task> {
+  async createTask(CreateTaskDto: CreateTaskDto): Promise<Task> {
     const { title, description } = CreateTaskDto;
 
     const task = this.tasksRepository.create({
@@ -45,9 +44,8 @@ export class TasksService {
     return task;
   }
 
-
   // :::::::::::::::::: DELETE TASK BY ID ::::::::::::::::::
-  async deleteTaskByID(id: string): Promise<void>{
+  async deleteTaskByID(id: string): Promise<void> {
     const result = await this.tasksRepository.delete(id);
     if (result.affected === 0) {
       throw new TaskIdNotFound(`Task with ID: ${id} not found`);
@@ -62,7 +60,7 @@ export class TasksService {
     if (task.status === status) {
       throw new AlreadExistsError(`Status is already ${status}`);
     }
-    
+
     // Update required column
     task.status = status;
 

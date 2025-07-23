@@ -1,17 +1,31 @@
 import { updateTaskStatusDto } from './dto/update-task-status.dto';
 import { CreateTaskDto } from './dto/create-task.dto';
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { GetTaskFilterDto } from './dto/get-task-filter.dto';
 import { Task } from './task.entity';
 import { ConfigService } from '@nestjs/config';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('tasks')
+@UseGuards(AuthGuard())
 export class TasksController {
-  constructor(private tasksService: TasksService,
-    private configService: ConfigService) {
+  constructor(
+    private tasksService: TasksService,
+    private configService: ConfigService,
+  ) {
     // console.log(configService.get('TEST_VALUE'));
-     }
+  }
 
   @Get()
   getTasks(@Query() filterDto: GetTaskFilterDto): Promise<Task[]> {
@@ -19,13 +33,13 @@ export class TasksController {
   }
 
   @Get('/:id')
-  getTaskByID(@Param('id') id: string): Promise<Task>{
+  getTaskByID(@Param('id') id: string): Promise<Task> {
     return this.tasksService.getTaskByID(id);
   }
-  
+
   @Delete('/:id')
   deleteTaskByID(@Param('id') id: string): Promise<void> {
-    return this.tasksService.deleteTaskByID(id)
+    return this.tasksService.deleteTaskByID(id);
   }
 
   // In this approach we can give whatever parameters to the body.
@@ -36,9 +50,7 @@ export class TasksController {
   //   }
 
   @Post()
-  creatTask(
-    @Body() createTaskDto: CreateTaskDto
-  ): Promise<Task> {
+  creatTask(@Body() createTaskDto: CreateTaskDto): Promise<Task> {
     return this.tasksService.createTask(createTaskDto);
   }
 
