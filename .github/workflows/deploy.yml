@@ -1,0 +1,24 @@
+name: Deploy to HS (via SH Runner)
+
+on:
+  workflow_run:
+    workflows: ["Build and Push Distroless Docker Image"]
+    types:
+      - completed
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+      - name: Checkout (required for context)
+        uses: actions/checkout@v3
+
+      - name: Pull latest Docker image
+        working-directory: ./backend/nestjs-task-management
+        run: docker-compose pull
+
+      - name: Restart with latest image
+        working-directory: ./backend/nestjs-task-management
+        run: docker-compose up -d --remove-orphans

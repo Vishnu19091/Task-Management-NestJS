@@ -2,9 +2,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { TaskStatus } from './task-status.enum';
+import { User } from 'src/auth/user.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class Task {
@@ -22,4 +25,11 @@ export class Task {
 
   @CreateDateColumn()
   createdAt: Date;
+
+  // user property
+  // here mulitple tasks can point to one user
+  @ManyToOne((_type) => User, (user) => user.tasks, { eager: false })
+    // To exclude the user properties in json
+  @Exclude({ toPlainOnly: true })
+  user: User;
 }

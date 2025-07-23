@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Task } from 'src/tasks/task.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 // here we Define properties of table in DB
 @Entity()
@@ -11,4 +12,9 @@ export class User {
 
   @Column()
   password: string;
+
+  // one user can have many tasks
+  // One to Many
+  @OneToMany((type) => Task, (task) => task.user, { eager: true })
+  tasks: Task[];
 }

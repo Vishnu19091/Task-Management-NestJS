@@ -1,3 +1,4 @@
+import { ConfigService } from '@nestjs/config';
 // An injectable class
 
 import { Injectable, UnauthorizedException } from '@nestjs/common';
@@ -11,11 +12,13 @@ import { User } from './user.entity';
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
+    private configService: ConfigService,
     @InjectRepository(UsersRepository)
     private usersrepository: UsersRepository,
   ) {
     super({
-      secretOrKey: 'topSecret51ByaNitpicker',
+      // non-null assertion done
+      secretOrKey: configService.get<string>('JWT_SECRET')!,
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     });
   }
