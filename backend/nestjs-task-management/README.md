@@ -6,17 +6,13 @@
 
 ## Task Management Backend API
 
-## Project setup
+TASK MANAGEMENT API
 
-### local usage
-
-I have pushed a image of this backend app in DockerHub.
+Image of this backend app is available in DockerHub.
 
 ```bash
 docker pull vishnu1183/task-management-nestjs:latest
 ```
-
-Then do **docker compose up -d**
 
 docker-compose.yml
 
@@ -34,21 +30,22 @@ services:
     environment:
       - NODE_ENV=production
       - STAGE=prod
-      - DB_HOST=postgres # DB_HOST_NAME
+      - DB_HOST=postgres
       - DB_PORT=5432
       - DB_USERNAME=postgres
-      - DB_PASSWORD=password
-      - DB_DATABASE=task-management # Don't change this DB_NAME
+      - DB_PASSWORD=YOUR_PASSWORD
+      - DB_DATABASE=task-management
+      - JWT_SECRET=YOUR_JWT_SECRET
 
   postgres:
     image: postgres:15-alpine
     container_name: postgres-nest
     restart: always
     ports:
-      - "5431:5432"
+      - "5432:5432"
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
+      POSTGRES_PASSWORD: YOUR_PASSWORD
       POSTGRES_DB: task-management
 
     volumes:
@@ -56,12 +53,13 @@ services:
 
 volumes:
   pgdata:
-
 ```
 
 ## Deployment
 
 Used [Tailscale](https://tailscale.com/kb/1223/funnel) for backend hosting and [Docker](https://docs.docker.com/get-started/) for containerization.
+
+> **Tailscale** is a VPN tool. Unlike typical VPN this creates a P2P mesh network. I have a home server and I can't expose it to the internet by port forwarding. Instead, I'm using tailscale to securely access it, and it also provides free DNS, so I made use of it.
 
 ## Stay in touch
 
