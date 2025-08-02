@@ -7,9 +7,9 @@ interface Prop {
 
 export default async function SignUp({ username, password }: Prop) {
   try {
-    const res = await api.post("/auth/signin", { username, password });
+    const res = await api.post("/auth/signup", { username, password });
     return res.data;
-  } catch (err: any) {
+  } catch (err) {
     throw err;
   }
 }

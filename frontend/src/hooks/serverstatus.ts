@@ -13,15 +13,16 @@ export default function ShowServerStatus(intervalMs: number = 10000) {
     const checkServer = async () => {
       try {
         const res = await api.get("");
-        // c.log
         // console.log(res.data);
         // Check if the data contains the value "ponged!"
         if (res.data?.ping === "ponged!") {
           setServerstatus(true);
+        } else {
+          setServerstatus(false);
         }
         // Else catch error and set state var to false
       } catch (error) {
-        console.error(error);
+        // console.error(error);
         setServerstatus(false);
       }
     };

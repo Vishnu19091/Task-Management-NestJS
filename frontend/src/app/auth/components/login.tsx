@@ -4,14 +4,19 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import SignUp from "../../../hooks/signup";
 import SignIn from "../../../hooks/signin";
+import axios from "axios";
 
+/**
+ * Displays Sign Up or Login Form based on condition
+ * @returns Form
+ */
 export default function AuthSwitcher() {
   const [isSignup, setIsSignup] = useState(false);
   const [isActive, setisActive] = useState<"signin" | "signup">("signin");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
 
   const router = useRouter();
 
@@ -22,7 +27,6 @@ export default function AuthSwitcher() {
     setError("");
 
     if (isSignup) {
-      // 🛡️ Only switch on success
       try {
         await SignUp({ username, password });
 
@@ -30,29 +34,32 @@ export default function AuthSwitcher() {
         setisActive("signin");
         setUsername("");
         setPassword("");
-        setError("✅ Account created successfully. Please sign in.");
-      } catch (err: any) {
-        let msg =
-          err.response?.data?.message ||
-          err.message ||
-          "Something went wrong during signup.";
-        setError(`❌ ${msg}`);
-        console.log(msg);
+        setError(""); // clear error only after success
+      } catch (err: unknown) {
+        if (axios.isAxiosError(err) && err.response) {
+          const message =
+            err.response.data?.message || "Signup failed. Please try again.";
+          setError(`${message}`);
+        } else {
+          setError("Unexpected error occurred during signup.");
+        }
       } finally {
         setLoading(false);
       }
     } else {
       try {
+        // Store the token if signin was succeeded
         const token = await SignIn({ username, password });
         localStorage.setItem("token", token);
-        router.push("/home");
+        // Redirect after signIn
+        router.push("/");
       } catch (err: any) {
         const msg =
           err.response?.data?.message ||
           err.message ||
           err ||
           "Something went wrong during login.";
-        setError(`❌ ${msg}`);
+        setError(`${msg}`);
       } finally {
         setLoading(false);
       }
@@ -60,13 +67,19 @@ export default function AuthSwitcher() {
   };
 
   return (
-    <div className="max-w-sm mx-auto mt-16 p-6 border rounded shadow-sm bg-white/10 space-y-4">
-      <div className="text-center text-xl flex flex-row justify-evenly gap-2">
+    <div className="max-w-sm mx-auto mt-16 p-6 border rounded-2xl shadow-sm bg-white/5 space-y-4">
+      {/* Switch between signup & signin */}
+      <div className="flex justify-center gap-6 text-xl my-4">
+        {/* Sign In */}
         <button
           type="button"
-          className={`text-blue-600 underline-offset-8 
-            ${isActive === "signin" ? "bg-black text-white underline" : ""}
-            rounded-lg px-10 py-2`}
+          className={`px-10 py-2 rounded-2xl transition-all duration-200 
+      underline-offset-8 focus:outline-none
+      ${
+        isActive === "signin"
+          ? "bg-black text-white underline ring-2 ring-blue-500"
+          : "text-blue-600"
+      }`}
           onClick={() => {
             setIsSignup(false);
             setisActive("signin");
@@ -74,11 +87,17 @@ export default function AuthSwitcher() {
         >
           Sign In
         </button>
+
+        {/* Sign Up */}
         <button
           type="button"
-          className={`text-blue-600 underline-offset-8 ${
-            isActive === "signup" ? "bg-black text-white underline" : ""
-          } rounded-lg px-10 py-2`}
+          className={`px-10 py-2 rounded-2xl transition-all duration-200 
+      underline-offset-8 focus:outline-none
+      ${
+        isActive === "signup"
+          ? "bg-black text-white underline ring-2 ring-blue-500"
+          : "text-blue-600"
+      }`}
           onClick={() => {
             setIsSignup(true);
             setisActive("signup");
@@ -92,11 +111,12 @@ export default function AuthSwitcher() {
         {isSignup ? "Sign Up" : "Sign In"}
       </h2>
 
+      {/* Form */}
       <form onSubmit={handleSubmit} className="space-y-4">
         <input
           type="text"
           placeholder="Username"
-          className="w-full border px-3 py-2 rounded"
+          className="w-full outline-0 border-b-2 focus:border-white px-3 py-2"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           required
@@ -105,7 +125,7 @@ export default function AuthSwitcher() {
         <input
           type="password"
           placeholder="Password"
-          className="w-full border px-3 py-2 rounded"
+          className="w-full outline-0 border-b-2 focus:border-white px-3 py-2"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
@@ -114,7 +134,7 @@ export default function AuthSwitcher() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+          className="w-full bg-black/40 text-white py-2 rounded hover:bg-black border-white hover:border transition"
         >
           {loading
             ? isSignup
@@ -125,7 +145,12 @@ export default function AuthSwitcher() {
             : "Sign In"}
         </button>
 
-        {error && <p className="text-red-600 text-sm text-center">{error}</p>}
+        {/* Show Error message */}
+        {error && (
+          <p className="text-white bg-red-700/20 border border-red-600 text-md text-center p-4 rounded-2xl">
+            {error}
+          </p>
+        )}
       </form>
     </div>
   );

@@ -5,7 +5,7 @@ const api = axios.create({
   // If your backend is on the same domain
 
   // TODO: Change it to your server DNS later
-  baseURL: "http://localhost:3000",
+  baseURL: "http://vishnu1183.auxois-ray.ts.net:3000",
   headers: {
     "Content-Type": "application/json",
   },

@@ -2,6 +2,10 @@
 
 Welcome to Task management app where authenticated users can create and manage their tasks.
 
+![ScreentShot](./frontend/public/assets/spic.png)
+
+![ScreentShot2](./frontend/public/assets/spic2.png)
+
 ## Tech Stack used
 
 ### Frontend
