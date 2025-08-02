@@ -9,7 +9,7 @@ async function bootstrap() {
   app.enableCors({
     // allowed ORIGINS:
     origin: [
-      'http://localhost:3001',
+      'http://localhost:3000',
       'https://task-management-nest-js.vercel.app',
     ],
     // Allowed Methods
