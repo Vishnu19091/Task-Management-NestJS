@@ -17,7 +17,7 @@ export default function useAuthToken(intervalMs: number = 3000) {
     if (storedToken) {
       setToken(storedToken); // no JSON.parse
 
-      // find if it is New user then redirect user to signup page
+      // find if it is New user; then redirect user to signup page
     } else if (storedToken === null) {
       setToken(null);
       setisTokenAlive(false);

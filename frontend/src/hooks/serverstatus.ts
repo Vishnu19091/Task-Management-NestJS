@@ -2,8 +2,9 @@ import { useState, useEffect } from "react";
 import api from "../lib/axios";
 
 /**
- * This function shows the status of the server
- * @param intervalMs
+ * Pings the server periodically and updates status.
+ *
+ * @param intervalMs - Interval in milliseconds to re-check status
  * @returns Server Status
  */
 export default function ShowServerStatus(intervalMs: number = 10000) {

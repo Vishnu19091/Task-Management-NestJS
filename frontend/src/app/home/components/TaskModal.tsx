@@ -20,10 +20,15 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useCreateTask } from "@/hooks/createTask";
+import ShowServerStatus from "@/hooks/serverstatus";
 import axios from "axios";
 import React, { useState } from "react";
 
-export function PopoverModal() {
+export function PopoverModal({
+  onTaskCreated,
+}: {
+  onTaskCreated?: () => void;
+}) {
   const [title, settitle] = useState<string>("");
   const [description, setdescription] = useState<string>("");
   const [error, seterror] = useState<string>("");
@@ -38,6 +43,8 @@ export function PopoverModal() {
     // passing the state var as a prop to the backend
     try {
       await createTask({ title: title, description: description });
+
+      if (onTaskCreated) onTaskCreated();
 
       // clear the form input fields
       setdescription("");

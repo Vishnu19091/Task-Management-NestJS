@@ -8,6 +8,7 @@ interface TaskProp {
   description: string;
   status: string;
   createdAt?: string;
+  onTaskFetch: () => void;
 }
 
 export default function TaskBlock({
@@ -15,6 +16,8 @@ export default function TaskBlock({
   title,
   description,
   status,
+  onTaskFetch,
+  createdAt,
 }: TaskProp) {
   const [taskStatus, settaskStatus] = useState<string>(status);
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -30,6 +33,8 @@ export default function TaskBlock({
   const handleDeleteTask = async () => {
     try {
       await deleteTask({ id: id });
+
+      if (onTaskFetch) onTaskFetch();
     } catch (err) {
       console.error(err);
     }
@@ -41,10 +46,13 @@ export default function TaskBlock({
 
     try {
       await updateTaskStatus({ id: id, status: newStatus });
+
+      if (onTaskFetch) onTaskFetch();
     } catch (err) {
       console.log(err);
     }
   };
+
   return (
     <li className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-black p-6 rounded-2xl border border-white/30 hover:bg-white/10 transition-colors duration-300 gap-4">
       <div className="flex-1 min-w-0">
@@ -80,6 +88,8 @@ export default function TaskBlock({
             {taskStatus}
           </p>
         )}
+
+        <p>{createdAt}</p>
       </div>
 
       <button
