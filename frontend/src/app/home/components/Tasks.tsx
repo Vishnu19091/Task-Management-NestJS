@@ -8,6 +8,14 @@ import useAuthToken from "@/hooks/useAuthToken";
 import { PopoverModal } from "./TaskModal";
 import { constrainedMemory } from "process";
 
+type Task = {
+  id: string;
+  title: string;
+  description: string;
+  status: "OPEN" | "IN_PROGRESS" | "DONE"; // enforce allowed values
+  // createdAt?: string; // if you also have dates
+};
+
 /**
  * Fetches the tasks of the user from db
  * uses token for authentication:Bearer
@@ -15,12 +23,12 @@ import { constrainedMemory } from "process";
  */
 export default function TaskList() {
   // for storing the task
-  const [tasks, setTasks] = useState<string[]>([]);
+  const [tasks, setTasks] = useState<Task[]>([]);
 
   const [activeFilter, setActiveFilter] = useState<string>("All");
 
   // filter tasks based on input
-  let filterTask: string[] = tasks.filter((task) => {
+  let filterTask = tasks.filter((task) => {
     if (activeFilter === "All") return true;
     return task.status === activeFilter;
   });
