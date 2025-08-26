@@ -67,11 +67,17 @@ export default function TaskBlock({
             value={taskStatus}
             onChange={(e) => handleStatusChange(e.target.value)}
             onBlur={() => setIsEditing(false)} // closes dropdown if clicked outside
-            className="text-white text-sm border border-yellow-300 rounded-2xl px-6 py-1"
+            className="text-white text-sm border border-cyan-300 rounded-2xl px-6 py-1 my-1"
           >
-            <option value="OPEN">OPEN</option>
-            <option value="IN_PROGRESS">IN_PROGRESS</option>
-            <option value="DONE">DONE</option>
+            <option className="text-black" value="OPEN">
+              OPEN
+            </option>
+            <option className="text-black" value="IN_PROGRESS">
+              IN_PROGRESS
+            </option>
+            <option className="text-black" value="DONE">
+              DONE
+            </option>
           </select>
         ) : (
           <p

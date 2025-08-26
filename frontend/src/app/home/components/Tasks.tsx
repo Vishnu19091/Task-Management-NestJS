@@ -12,8 +12,8 @@ type Task = {
   id: string;
   title: string;
   description: string;
-  status: "OPEN" | "IN_PROGRESS" | "DONE"; // enforce allowed values
-  // createdAt?: string; // if you also have dates
+  status: "OPEN" | "IN_PROGRESS" | "DONE";
+  // createdAt?: string;
 };
 
 /**
@@ -88,7 +88,7 @@ export default function TaskList() {
               {["All", "OPEN", "IN_PROGRESS", "DONE"].map((status) => (
                 <FilterButton
                   key={status}
-                  className="font-normal px-2 py-1 rounded-2xl border w-auto"
+                  className="font-normal px-2 py-1 rounded-2xl border"
                   value={status}
                   onClick={setActiveFilter}
                   isActive={activeFilter === status}
@@ -148,9 +148,17 @@ function FilterButton({
   onClick: (value: string) => void;
   isActive: boolean;
 }) {
+  // Set of properties K of type T
+  const activeColors: Record<typeof value, string> = {
+    All: "bg-white/50 border-white text-white",
+    OPEN: "bg-gray-400/50 border-gray-500 text-gray-200/70",
+    IN_PROGRESS: "bg-blue-400/50 border-blue-500 text-blue-200/70",
+    DONE: "bg-green-400/50 border-green-500 text-green-200/70",
+  };
+
   return (
     <button
-      className={`${className} ${isActive ? "bg-white/30 border-white" : ""}`}
+      className={`${className} ${isActive ? activeColors[value] : ""}`}
       onClick={() => onClick(value)}
     >
       {value}
