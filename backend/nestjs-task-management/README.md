@@ -57,9 +57,7 @@ volumes:
 
 ## Deployment
 
-Used [Tailscale](https://tailscale.com/kb/1223/funnel) for backend hosting and [Docker](https://docs.docker.com/get-started/) for containerization.
-
-> **Tailscale** is a VPN tool. Unlike typical VPN this creates a P2P mesh network. I have a home server and I can't expose it to the internet by port forwarding. Instead, I'm using tailscale to securely access it, and it also provides free DNS, so I made use of it.
+Used [Tailscale](https://tailscale.com/kb/1223/funnel) for backend hosting.
 
 ## Stay in touch
 

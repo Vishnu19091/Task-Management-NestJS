@@ -28,5 +28,5 @@ Welcome to Task management app where authenticated users can create and manage t
 
 Deployed Link - [https://task-management-nest-js.vercel.app](https://task-management-nest-js.vercel.app) **(Still in development)**
 
-1. Backend API services is hosted using Tailscale.
+1. Backend API service is hosted using Tailscale.
 2. Frontend deployed using Vercel.
