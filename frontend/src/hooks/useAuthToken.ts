@@ -1,50 +1,93 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
+/**
+ * By Default a timer runs every 3s to fetch the token
+
+ * from the localStorage.
+
+ * If no token found then **redirects to login/signup page**.
+
+ * @param intervalMs -> 3s
+
+ * @returns **Token, isTokenAlive, setisTokenAlive**
+
+ */
 export default function useAuthToken(intervalMs: number = 3000) {
-  // storing the token
   const [token, setToken] = useState<string | null>(null);
-
-  const [isTokenAlive, setisTokenAlive] = useState<boolean | null>(true);
+  const [isTokenAlive, setIsTokenAlive] = useState<boolean | null>(null);
+  const [isRedirecting, setIsRedirecting] = useState<boolean>(false);
 
   const router = useRouter();
 
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    // console.log(storedToken);
-    if (storedToken) {
-      setToken(storedToken); // no JSON.parse
+  // decode JWT and checks expiry!!!!
+  const isValidToken = (jwt: string) => {
+    try {
+      const [, payload] = jwt.split(".");
+      const decoded = JSON.parse(atob(payload));
+      if (!decoded.exp) return true; // no expiry field
 
-      // find if it is New user; then redirect user to signup page
-    } else if (storedToken === null) {
+      const now = Math.floor(Date.now() / 1000);
+      return decoded.exp > now;
+    } catch (err) {
+      console.warn("Invalid JWT:", err);
+      return false;
+    }
+  };
+
+  // <----- Callback function to synchronize the token ----->
+  const syncToken = useCallback(() => {
+    const storedToken = localStorage.getItem("token");
+
+    if (storedToken && isValidToken(storedToken)) {
+      setToken(storedToken);
+      setIsTokenAlive(true);
+    } else {
       setToken(null);
-      setisTokenAlive(false);
-      router.push("/auth");
+      setIsTokenAlive(false);
     }
   }, []);
 
+  // Side Effect run once on mount to sync the token
+  useEffect(() => {
+    syncToken();
+
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === "token") syncToken();
+    };
+    window.addEventListener("storage", onStorage);
+
+    return () => {
+      window.removeEventListener("storage", onStorage);
+    };
+  }, [syncToken]);
+
+  // <----- interval that periodically checks the token is valid or not ----->
   useEffect(() => {
     const interval = setInterval(() => {
-      const currentToken = localStorage.getItem("token");
+      syncToken();
 
-      // if token is not present or has null
-      if (!currentToken || currentToken === null) {
-        setToken(null);
-        setisTokenAlive(false);
-        router.push("/auth");
-      }
-
-      // if token is not alive send to signin page
-      if (isTokenAlive === false) {
-        setToken(null);
-        router.push("/auth");
-      }
+      // Depends on intervalMs
     }, intervalMs);
 
+    // <----- Cleanup func ----->
     return () => clearInterval(interval);
-  }, [intervalMs, isTokenAlive]);
+  }, [intervalMs, syncToken]);
 
-  return { token, isTokenAlive, setisTokenAlive };
+  // redirect only when we are sure token is invalid
+  useEffect(() => {
+    if (isTokenAlive === false) {
+      setIsRedirecting(true);
+      const timeout = setTimeout(() => {
+        router.push("/auth");
+      }, 3000);
+
+      // cleanup function
+      return () => clearTimeout(timeout);
+    }
+  }, [isTokenAlive, router]);
+
+  return { token, isTokenAlive, setIsTokenAlive, isRedirecting };
 }

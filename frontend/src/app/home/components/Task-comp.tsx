@@ -1,6 +1,6 @@
 import { useDeleteTask } from "@/hooks/deleteTask";
 import { useUpdateTaskStatus } from "@/hooks/updateTaskStatus";
-import React, { useState } from "react";
+import { useState } from "react";
 
 interface TaskProp {
   id: string;
@@ -56,6 +56,7 @@ export default function TaskBlock({
   return (
     <li className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-black p-6 rounded-2xl border border-white/30 hover:bg-white/10 transition-colors duration-300 gap-4">
       <div className="flex-1 min-w-0">
+        {/* Task Title & Description */}
         <h3 className="text-2xl sm:text-3xl font-semibold text-white break-words">
           {title}
         </h3>
@@ -98,6 +99,7 @@ export default function TaskBlock({
         <p>{createdAt}</p>
       </div>
 
+      {/* Delete Button */}
       <button
         className="bg-red-500 hover:bg-red-600 transition px-3 py-2 rounded-2xl cursor-pointer"
         title="Delete Task"

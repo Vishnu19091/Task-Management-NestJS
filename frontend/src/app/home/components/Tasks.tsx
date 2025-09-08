@@ -1,20 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import api from "@/lib/axios";
 import TaskBlock from "./Task-comp";
-import axios from "axios";
 import useAuthToken from "@/hooks/useAuthToken";
-import { PopoverModal } from "./TaskModal";
-import { constrainedMemory } from "process";
-
-type Task = {
-  id: string;
-  title: string;
-  description: string;
-  status: "OPEN" | "IN_PROGRESS" | "DONE";
-  // createdAt?: string;
-};
+import { usefetchTasks } from "@/hooks/fetchTasks";
+import { CreateTask } from "./TaskModal";
 
 /**
  * Fetches the tasks of the user from db
@@ -22,59 +12,23 @@ type Task = {
  * @returns Tasks[] of the user
  */
 export default function TaskList() {
-  // for storing the task
-  const [tasks, setTasks] = useState<Task[]>([]);
-
   const [activeFilter, setActiveFilter] = useState<string>("All");
+
+  // for storing the task
+  const { tasks, fetchTasks } = usefetchTasks();
 
   // filter tasks based on input
   let filterTask = tasks.filter((task) => {
     if (activeFilter === "All") return true;
     return task.status === activeFilter;
   });
-  // console.log(filterTask);
 
-  const { token, isTokenAlive, setisTokenAlive } = useAuthToken();
+  const { token, isTokenAlive } = useAuthToken();
 
-  // Fetch the tasks
-  const fetchTasks = async () => {
-    try {
-      const res = await api.get("/tasks", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setTasks(res.data);
-
-      // set token is alive
-      setisTokenAlive(true);
-      // console.log(res.data);
-
-      // if token has expired, log the error
-    } catch (err: unknown) {
-      if (axios.isAxiosError(err) && err.response) {
-        const status = err.response.status;
-        const message = err.response.data?.message;
-
-        if (status == 401) {
-          console.warn("Token expired!:");
-          setisTokenAlive(false);
-        } else {
-          console.error(status, message);
-        }
-      } else {
-        console.error(err);
-      }
-    }
-  };
-
-  // Fetching the tasks
+  // Fetches the tasks if the token is alive
   useEffect(() => {
-    // TODO: if token not found return user to the login or signup page
     if (token) fetchTasks();
-  }, [token]);
-
-  const [sortActive, isSortActive] = useState(true);
+  }, [token, isTokenAlive]);
 
   return (
     <>
@@ -97,11 +51,11 @@ export default function TaskList() {
             </div>
 
             {/* TODO: Create a task modal */}
-            <PopoverModal onTaskCreated={fetchTasks} />
+            <CreateTask fetchTasks={fetchTasks} />
           </div>
 
           {/* display Tasks */}
-          {filterTask.length > 0 ? (
+          {filterTask.length > 0 && (
             <ul className="flex flex-col gap-6 w-full">
               {filterTask.map((task: any) => (
                 <TaskBlock
@@ -115,9 +69,29 @@ export default function TaskList() {
                 />
               ))}
             </ul>
-          ) : (
+          )}
+
+          {/* No Tasks display messages */}
+          {activeFilter === "All" && filterTask.length <= 0 && (
             <h2 className="text-center font-bold text-3xl">
               Start Creating Tasks
+            </h2>
+          )}
+
+          {activeFilter === "OPEN" && filterTask.length <= 0 && (
+            <h2 className="text-center font-bold text-3xl">
+              There is no active OPEN Tasks
+            </h2>
+          )}
+          {activeFilter === "IN_PROGRESS" && filterTask.length <= 0 && (
+            <h2 className="text-center font-bold text-3xl">
+              There is no active IN_PROGRESS Tasks
+            </h2>
+          )}
+
+          {activeFilter === "DONE" && filterTask.length <= 0 && (
+            <h2 className="text-center font-bold text-3xl">
+              There is no active DONE Tasks
             </h2>
           )}
         </div>
@@ -126,11 +100,13 @@ export default function TaskList() {
         // new users should allowed to use app only when they signup
         // then show redirecting
         <div>
-          Token has expired please you have to{" "}
-          <strong className="font-extrabold text-blue-400">
-            sign in again{" "}
-          </strong>
-          redirecting....
+          <h1 className="text-3xl text-center">
+            Token has expired please you have to{" "}
+            <strong className="font-extrabold text-blue-400">
+              sign in again{" "}
+            </strong>
+            redirecting....
+          </h1>
         </div>
       )}
     </>

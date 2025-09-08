@@ -23,15 +23,15 @@ import { useCreateTask } from "@/hooks/createTask";
 import ShowServerStatus from "@/hooks/serverstatus";
 import axios from "axios";
 import React, { useState } from "react";
+import { useKey } from "../hooks/useKey";
 
-export function PopoverModal({
-  onTaskCreated,
-}: {
-  onTaskCreated?: () => void;
-}) {
+export function CreateTask({ fetchTasks }: { fetchTasks?: () => void }) {
   const [title, settitle] = useState<string>("");
   const [description, setdescription] = useState<string>("");
   const [error, seterror] = useState<string>("");
+
+  // state for modal window
+  const [open, setOpen] = useState<boolean>(false);
 
   //   console.log(title, description);
 
@@ -44,7 +44,7 @@ export function PopoverModal({
     try {
       await createTask({ title: title, description: description });
 
-      if (onTaskCreated) onTaskCreated();
+      if (fetchTasks) fetchTasks();
 
       // clear the form input fields
       setdescription("");
@@ -65,8 +65,13 @@ export function PopoverModal({
     }
   };
 
+  // Key press event to open modal window for creating tasks
+  useKey("t", function () {
+    setOpen(true);
+  });
+
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
           variant="outline"

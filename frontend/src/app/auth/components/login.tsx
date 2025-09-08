@@ -10,7 +10,7 @@ import axios from "axios";
  * Displays Sign Up or Login Form based on condition
  * @returns Form
  */
-export default function AuthSwitcher() {
+export default function SignupLogin() {
   const [isSignup, setIsSignup] = useState(false);
   const [isActive, setisActive] = useState<"signin" | "signup">("signin");
   const [username, setUsername] = useState<string>("");
@@ -66,6 +66,12 @@ export default function AuthSwitcher() {
     }
   };
 
+  // Toggle Password Visibility func()
+  const [showPassword, setShowPassword] = useState(false);
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <div className="max-w-sm mx-auto mt-16 p-6 border rounded-2xl shadow-sm bg-white/5 space-y-4">
       {/* Switch between signup & signin */}
@@ -107,6 +113,7 @@ export default function AuthSwitcher() {
         </button>
       </div>
 
+      {/* Title */}
       <h2 className="text-2xl font-bold text-center">
         {isSignup ? "Sign Up" : "Sign In"}
       </h2>
@@ -122,14 +129,26 @@ export default function AuthSwitcher() {
           required
         />
 
-        <input
-          type="password"
-          placeholder="Password"
-          className="w-full outline-0 border-b-2 focus:border-white px-3 py-2"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
+        <div className="relative w-full">
+          <input
+            type={showPassword ? "text" : "password"}
+            placeholder="Password"
+            className="w-full outline-0 border-b-2 focus:border-white px-3 py-2"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+
+          {/* Show/Hide Toggle Button */}
+          <button
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-blue-500 font-semibold 
+               hover:text-orange-700 transition-colors duration-200"
+            type="button"
+            onClick={togglePasswordVisibility}
+          >
+            {showPassword ? "Hide" : "Show"}
+          </button>
+        </div>
 
         <button
           type="submit"
