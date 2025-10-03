@@ -58,9 +58,3 @@ volumes:
 ## Deployment
 
 Used [Tailscale](https://tailscale.com/kb/1223/funnel) for backend hosting.
-
-## Stay in touch
-
-- Author - [Vishnu VT](#)
-- Website - [Portfolio](https://vishnu-portfolio-blue.vercel.app/)
-- [LinkedIn](https://www.linkedin.com/in/vishnuvt1183/)
