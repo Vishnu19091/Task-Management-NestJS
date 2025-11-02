@@ -1,7 +1,7 @@
 "use client";
 
 import { ReactNode } from "react";
-import ShowServerStatus from "@/hooks/serverstatus";
+import ShowServerStatus from "@/_hooks/serverstatus";
 
 export default function ClientWrapper({ children }: { children: ReactNode }) {
   const Serverstatus = ShowServerStatus();

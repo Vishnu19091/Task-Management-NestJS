@@ -1,5 +1,5 @@
-import { useDeleteTask } from "@/hooks/deleteTask";
-import { useUpdateTaskStatus } from "@/hooks/updateTaskStatus";
+import { useDeleteTask } from "@/_hooks/deleteTask";
+import { useUpdateTaskStatus } from "@/_hooks/updateTaskStatus";
 import { useState } from "react";
 
 interface TaskProp {

@@ -1,28 +1,25 @@
 import { headers } from "next/headers";
 import useAuthToken from "./useAuthToken";
-import api from "@/lib/axios";
+import api from "@/_lib/axios";
 import { useCallback } from "react";
 
-interface Prop {
-  id: string;
-  status: string;
+interface TaskProp {
+  title: string;
+  description: string;
 }
 
-/**
- * @returns **Updated Task Status**
- */
-export function useUpdateTaskStatus() {
+export function useCreateTask() {
   const { token } = useAuthToken();
   //   console.log(token);
 
-  const updateTaskStatus = useCallback(
-    async ({ id, status }: Prop) => {
+  const createTask = useCallback(
+    async ({ title, description }: TaskProp) => {
       if (!token) throw new Error("No token found");
 
       try {
-        const res = await api.patch(
-          `/tasks/${id}/status`,
-          { id, status },
+        const res = await api.post(
+          "/tasks",
+          { title, description },
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -38,5 +35,5 @@ export function useUpdateTaskStatus() {
     [token]
   );
 
-  return { updateTaskStatus };
+  return { createTask };
 }

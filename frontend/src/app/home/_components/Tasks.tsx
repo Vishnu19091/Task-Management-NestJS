@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import TaskBlock from "./Task-comp";
-import useAuthToken from "@/hooks/useAuthToken";
-import { usefetchTasks } from "@/hooks/fetchTasks";
+import useAuthToken from "@/_hooks/useAuthToken";
+import { usefetchTasks } from "@/_hooks/fetchTasks";
 import { CreateTask } from "./TaskModal";
 
 /**

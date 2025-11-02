@@ -1,4 +1,4 @@
-import api from "@/lib/axios";
+import api from "@/_lib/axios";
 import axios from "axios";
 import { useState } from "react";
 import useAuthToken from "./useAuthToken";

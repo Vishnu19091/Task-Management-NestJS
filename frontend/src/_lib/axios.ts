@@ -3,8 +3,8 @@ import axios from "axios";
 
 const api = axios.create({
   // <--------------- For local use: Change it to your server DNS later --------------->
-  baseURL: "https://vishnu1183.auxois-ray.ts.net",
-  // baseURL: "http://localhost:3001",
+  // baseURL: "https://vishnu1183.auxois-ray.ts.net",
+  baseURL: "http://localhost:3000",
   headers: {
     "Content-Type": "application/json",
   },

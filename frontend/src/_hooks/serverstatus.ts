@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import api from "../lib/axios";
+import api from "../_lib/axios";
 
 /**
  * Pings the server periodically and updates status.

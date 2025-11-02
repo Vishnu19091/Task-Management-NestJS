@@ -1,8 +1,7 @@
 "use client";
 
-import ShowServerStatus from "@/hooks/serverstatus";
-import Link from "next/link";
-import TaskList from "./components/Tasks";
+import ShowServerStatus from "@/_hooks/serverstatus";
+import TaskList from "./_components/Tasks";
 
 export default function Home() {
   return (

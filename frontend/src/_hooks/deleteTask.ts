@@ -1,6 +1,6 @@
 import { headers } from "next/headers";
 import useAuthToken from "./useAuthToken";
-import api from "@/lib/axios";
+import api from "@/_lib/axios";
 import { useCallback } from "react";
 
 interface Prop {
