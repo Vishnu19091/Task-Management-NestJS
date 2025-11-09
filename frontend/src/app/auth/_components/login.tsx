@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import SignUp from "../../../hooks/signup";
-import SignIn from "../../../hooks/signin";
+import SignUp from "../../../_hooks/signup";
+import SignIn from "../../../_hooks/signin";
 import axios from "axios";
 
 /**
