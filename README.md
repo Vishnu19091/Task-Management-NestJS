@@ -1,6 +1,6 @@
 ## Task Management Web Application
 
-Welcome to Task management app where authenticated users can create and manage their tasks.
+Welcome to Task management app where authenticated users can create and manage their tasks. Recommended way to use this project is self-host and for the back-end use the docker image provided.
 
 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
 
@@ -18,11 +18,11 @@ Welcome to Task management app where authenticated users can create and manage t
 
 - React
 - TypeScript
+- NextJS
 
 ### Backend
 
 - NestJS
-- NextJS
 - TypeScript
 
 ### DataBase
